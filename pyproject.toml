@@ -3,9 +3,9 @@ requires = ["maturin>=1.5,<2.0"]
 build-backend = "maturin"
 
 [project]
-name = "headroom-ai"
-version = "0.26.0"
-description = "The Context Optimization Layer for LLM Applications - Cut costs by 50-90%"
+name = "headroom-hardened"
+version = "0.26.1"
+description = "Hardened fork of headroom-ai with correctness/safety bug fixes - The Context Optimization Layer for LLM Applications"
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.10"

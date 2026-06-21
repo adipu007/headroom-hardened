@@ -1,3 +1,8 @@
+> **headroom-hardened** — a fork of [chopratejas/headroom](https://github.com/chopratejas/headroom)
+> (`headroom-ai`) with a set of correctness and safety bug fixes applied on top of upstream.
+> See [FORK-CHANGES.md](FORK-CHANGES.md) for the full list of changes. Licensed under Apache-2.0;
+> all upstream copyright and attribution is retained.
+
 <div align="center"><pre>
   ██╗  ██╗███████╗ █████╗ ██████╗ ██████╗  ██████╗  ██████╗ ███╗   ███╗
   ██║  ██║██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔═══██╗██╔═══██╗████╗ ████║

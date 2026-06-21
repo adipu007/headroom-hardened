@@ -3,6 +3,10 @@ Copyright 2025 Headroom Contributors
 
 This product includes software developed by the Headroom Contributors.
 
+headroom-hardened is a fork of headroom-ai (https://github.com/chopratejas/headroom),
+modified in 2026 to apply correctness and safety bug fixes. See FORK-CHANGES.md for
+the list of changed files and the nature of each change (Apache-2.0 section 4b).
+
 Third-Party Licenses
 ====================
 
