@@ -122,17 +122,29 @@ redis = { version = "0.27", optional = true, default-features = false }
 # cycling through the proxy crate. Tiny crate (no I/O, just types).
 http = "1"
 
-[target.'cfg(not(windows))'.dependencies]
+# ORT binary strategy is per-target:
+#
+# * STATIC download (pyke prebuilt) — macOS arm64 and Linux x86_64. pyke ships
+#   static ONNX Runtime for these, so ORT links into `_core` and the wheel is
+#   self-contained.
+# * LOAD-DYNAMIC — Windows, plus macOS x86_64 (Intel) and Linux aarch64. pyke
+#   provides no static prebuilt for the latter two (and Microsoft ships only
+#   dynamic libs), so ORT is dlopen'd at runtime instead of linked. Core
+#   compression has no ORT dependency; only the optional relevance/ML-detection
+#   tiers call into ORT, which is loaded lazily from a system libonnxruntime
+#   (e.g. the `onnxruntime` pip extra) or `ORT_DYLIB_PATH`. On Windows this also
+#   avoids emitting DirectML link libs (DXCORE/DXGI/D3D12/DirectML) that sdist
+#   users may not have.
+#
+# The two cfg predicates below are mutually exclusive and exhaustive.
+[target.'cfg(not(any(windows, all(target_os = "macos", target_arch = "x86_64"), all(target_os = "linux", target_arch = "aarch64"))))'.dependencies]
 fastembed = { version = "5", default-features = false, features = [
     "hf-hub-rustls-tls",
     "ort-download-binaries-rustls-tls",
     "image-models",
 ] }
 
-[target.'cfg(windows)'.dependencies]
-# `ort-download-binaries-*` emits DirectML link libs on Windows (`DXCORE`,
-# `DXGI`, `D3D12`, `DirectML`). Users installing `headroom-ai[all]` from
-# sdist often do not have those SDK libs, so load ORT dynamically instead.
+[target.'cfg(any(windows, all(target_os = "macos", target_arch = "x86_64"), all(target_os = "linux", target_arch = "aarch64")))'.dependencies]
 fastembed = { version = "5", default-features = false, features = [
     "hf-hub-rustls-tls",
     "ort-load-dynamic",
