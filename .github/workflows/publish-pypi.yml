@@ -29,11 +29,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # abi3 wheels (cp310-abi3) — one wheel per arch covers Python 3.10+.
+        # abi3 wheels (cp310-abi3) — one wheel per target covers Python 3.10+.
+        # Targets are limited to those the `ort` (ONNX Runtime) crate ships
+        # prebuilt binaries for. Intel macOS (x86_64-apple-darwin) and ARM Linux
+        # (aarch64) have no ort prebuilts and fail to link, so they are excluded;
+        # users on those platforms install from the sdist (requires a Rust
+        # toolchain + system ONNX Runtime).
         include:
           - { platform: linux,   runner: ubuntu-latest,  target: x86_64 }
-          - { platform: linux,   runner: ubuntu-latest,  target: aarch64 }
-          - { platform: macos,   runner: macos-latest,   target: universal2-apple-darwin }
+          - { platform: macos,   runner: macos-latest,   target: aarch64-apple-darwin }
           - { platform: windows, runner: windows-latest, target: x64 }
     steps:
       - uses: actions/checkout@v4
