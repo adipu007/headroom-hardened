@@ -30,6 +30,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install dist/*.whl
+          # cd out of the repo so `import headroom` resolves the installed wheel,
+          # not the local ./headroom source tree (which has no compiled _core).
+          cd "$RUNNER_TEMP"
           python -c "import headroom, headroom._core; from headroom import compress; print('IMPORT OK', getattr(headroom, '__version__', '?'))"
 
   linux-aarch64:
@@ -51,4 +54,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install dist/*.whl
+          # cd out of the repo so `import headroom` resolves the installed wheel,
+          # not the local ./headroom source tree (which has no compiled _core).
+          cd "$RUNNER_TEMP"
           python -c "import headroom, headroom._core; from headroom import compress; print('IMPORT OK', getattr(headroom, '__version__', '?'))"
