@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "headroom-hardened"
-version = "0.26.2"
+version = "0.26.3"
 description = "Hardened fork of headroom-ai with correctness/safety bug fixes - The Context Optimization Layer for LLM Applications"
 readme = "README.md"
 license = "Apache-2.0"
