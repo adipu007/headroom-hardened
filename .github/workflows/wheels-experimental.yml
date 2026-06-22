@@ -34,18 +34,21 @@ jobs:
 
   linux-aarch64:
     name: ARM Linux (aarch64) build + import
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm # native arm64 — no QEMU/cross (avoids ring asm miscompile)
     steps:
       - uses: actions/checkout@v4
-      - uses: docker/setup-qemu-action@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
       - name: Build wheel
         uses: PyO3/maturin-action@v1
         with:
-          target: aarch64
+          target: aarch64-unknown-linux-gnu
           command: build
           args: --release --out dist
           manylinux: auto
-      - name: Import smoke test (emulated arm64)
+      - name: Import smoke test
         run: |
-          docker run --rm --platform linux/arm64 -v "$PWD/dist:/dist" python:3.12-slim \
-            bash -c "pip install /dist/*.whl && python -c \"import headroom, headroom._core; from headroom import compress; print('IMPORT OK', getattr(headroom, '__version__', '?'))\""
+          python -m pip install --upgrade pip
+          pip install dist/*.whl
+          python -c "import headroom, headroom._core; from headroom import compress; print('IMPORT OK', getattr(headroom, '__version__', '?'))"
